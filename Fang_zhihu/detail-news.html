@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a href="index.html"><span class="mui-icon mui-icon-back"></span></a>
+			<h1 id="title-1" class="mui-title"></h1>
+		</header>
+
+		<div class="mui-content">
+			<div class="mui-slider">
+				<div class="mui-slider-group">
+					<div class="mui-slider-item">
+						<a href="#">
+							<img id="img_src" src="" />
+							<p id="img-title" style="font-size: 30px;position: absolute;bottom: 30px;color: #DDDDDD;">
+								
+							</p>
+						</a>
+					</div>
+				</div>
+			</div>
+			
+			<div id="page-content" class="mui-content">
+				
+			</div>
+			
+		</div>
+
+
+		<script src="js/mui.js"></script>
+
+		<script type="text/javascript">
+			mui.init();
+
+			mui("boy").on("tap", "a", function() {
+				document.location.href = this.href;
+			});
+
+			var data = {
+				page: function() {
+					var url = window.location.search;
+					var id = url.substring(4);
+
+					mui.get("http://news-at.zhihu.com/api/2/news/" + id, function(data) {
+						document.getElementById("title-1").innerHTML = data.title;
+						document.getElementById("img_src").src=data.image;
+						document.getElementById("page-content").innerHTML=data.body;
+						document.getElementById("img-title").innerHTML=data.image_source;
+					});
+
+				},
+				start: function() {
+					data.page();
+				}
+			};
+			data.start();
+		</script>
+	</body>
+
+</html>

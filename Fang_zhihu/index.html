@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Access-Control-Allow-Origin" content="">
+		<meta http-equiv="content-security-policy">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+		</script>
+	</head>
+
+	<body>
+		<!-- 主界面移动、菜单不动 -->
+		<div class="mui-off-canvas-wrap mui-draggable">
+			<!-- 菜单容器 -->
+			<aside class="mui-off-canvas-left" id="offCanvasSide">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<!-- 菜单具体展示内容 -->
+
+						<!--图文列表-->
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell mui-media">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="http://placehold.it/40x30">
+									<div class="mui-media-body">
+										幸福
+										<p class="mui-ellipsis">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+									</div>
+								</a>
+							</li>
+							<li class="mui-table-view-cell mui-media">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="http://placehold.it/40x30">
+									<div class="mui-media-body">
+										木屋
+										<p class="mui-ellipsis">想要这样一间小木屋，夏天挫冰吃瓜，冬天围炉取暖.</p>
+									</div>
+								</a>
+							</li>
+							<li class="mui-table-view-cell mui-media">
+								<a href="javascript:;">
+									<img class="mui-media-object mui-pull-left" src="http://placehold.it/40x30">
+									<div class="mui-media-body">
+										CBD
+										<p class="mui-ellipsis">烤炉模式的城，到黄昏，如同打翻的调色盘一般.</p>
+									</div>
+								</a>
+							</li>
+						</ul>
+
+						<!---->
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell">Item 1</li>
+							<li class="mui-table-view-cell">Item 2</li>
+							<li class="mui-table-view-cell">Item 3</li>
+						</ul>
+
+						<style>
+							/*点击变蓝色高亮*/
+							
+							.mui-table-view-cell.mui-active {
+								background-color: #0062CC;
+							}
+						</style>
+
+					</div>
+				</div>
+			</aside>
+			<!-- 主页面容器 -->
+			<div class="mui-inner-wrap">
+				<!-- 主页面标题 -->
+				<header class="mui-bar mui-bar-nav">
+					<a class="mui-icon mui-action-menu mui-icon-bars mui-pull-left" href="#offCanvasSide"></a>
+					<h1 class="mui-title">假冒知乎日报</h1>
+				</header>
+				<nav class="mui-bar mui-bar-tab">
+					<a class="mui-tab-item mui-active">
+						<span class="mui-icon mui-icon-home"></span>
+						<span class="mui-tab-label">首页</span>
+					</a>
+					<a class="mui-tab-item">
+						<span class="mui-icon mui-icon-phone"></span>
+						<span class="mui-tab-label">电话</span>
+					</a>
+					<a class="mui-tab-item">
+						<span class="mui-icon mui-icon-email"></span>
+						<span class="mui-tab-label">邮件</span>
+					</a>
+					<a class="mui-tab-item">
+						<span class="mui-icon mui-icon-gear"></span>
+						<span class="mui-tab-label">设置</span>
+					</a>
+				</nav>
+				<div class="mui-content mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<!-- 主界面具体展示内容 -->
+
+						<!--轮播图片-->
+						<div id="slider" class="mui-slider">
+							<div id="title_img" class="mui-slider-group mui-slider-loop">
+
+							</div>
+
+							<div id="title_img_status" class="mui-slider-indicator">
+
+							</div>
+							
+						</div>
+
+						<span style="font-size: 15px;margin-left: 20px;color:gray;">今日热闻</span>
+
+						<!--图文列表-->
+						<ul id="table-view-list-content" class="mui-table-view">
+
+						</ul>
+
+					</div>
+				</div>
+				<div class="mui-off-canvas-backdrop"></div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="js/jquery-1.12.3.js"></script>
+		<script>
+			var data = {
+				ajax_slider: function() {
+					mui.ajax("https://news-at.zhihu.com/api/4/news/latest", {
+						type: "get",
+						success: function(data) {
+							var imgHtml = "";
+							var imgIndex = "";
+							var index_img_src = data.stories[0].images[0];
+							mui.each(data.stories, function(index, obj) {
+
+								if (index == 0) {
+									imgHtml += "<div class='mui-slider-item mui-slider-item-duplicate'>";
+									imgHtml += "<a href='#'>";
+									imgHtml += "<img src='" + index_img_src + "'>";
+									imgHtml += "</a>";
+									imgHtml += "</div>";
+
+									//图片标志点
+									imgIndex += "<div class='mui-indicator mui-active'></div>";
+
+								} else if ((index + 1) == data.stories.length) {
+									imgHtml += "<div class='mui-slider-item mui-slider-item-duplicate'>";
+									imgHtml += "<a href='#'>";
+									imgHtml += "<img  src='" + index_img_src + "'>";
+									imgHtml += "</a>";
+									imgHtml += "</div>";
+
+								} else {
+									//图片
+									imgHtml += "<div class='mui-slider-item'>";
+									imgHtml += "<a href='page_img_content.html?id="+obj.id+"'>";
+									imgHtml += "<img src='" + obj.images[0] + "' />";
+									//固定 轮播图片的内容 
+									if (obj.title.length > 15) {
+										imgHtml +=
+											"<p  style='font-family:楷体;color: red;position: absolute;top: 350px;left: 60px;font-size: 20px;height:20px;width: 350px;'>";
+										imgHtml += "" + obj.title.substring(0, 15) + "";
+										imgHtml += "</p>";
+										imgHtml += "</a>";
+
+										imgHtml +=
+											"<p  style='font-family:楷体;color: red;position: absolute;top: 350px;left: 30px;padding:10px;font-size: 20px;height:20px;width: 350px;'>";
+										imgHtml += "" + obj.title.substring(15, obj.title.length) + "";
+										imgHtml += "</p>";
+										imgHtml += "</a>";
+
+									} else {
+										imgHtml +=
+											"<p  style='font-family:楷体;color: red;position: absolute;top: 350px;left: 20px;padding:10px;font-size: 20px;height:20px;width: 350px;'>";
+										imgHtml += "" + obj.title + "";
+										imgHtml += "</p>";
+										imgHtml += "</a>";
+									}
+									imgHtml += "</div>";
+									//图片标志点
+									imgIndex += "<div class='mui-indicator'></div>";
+
+								}
+							});
+
+							document.getElementById("title_img").innerHTML = imgHtml;
+							document.getElementById("title_img_status").innerHTML = imgIndex;
+
+							//获得slider插件对象
+							var gallery = mui('.mui-slider');
+							gallery.slider({
+								interval: 2000 //自动轮播周期，若为0则不自动播放，默认为0；
+							});
+
+						}
+					});
+				},
+				ajax_card_list: function() {
+					mui.ajax("https://news-at.zhihu.com/api/3/news/hot", {
+						type: "get",
+						success: function(data) {
+							var Html = "";
+
+							mui.each(data.recent, function(index, obj) {
+								Html += "<li class='mui-table-view-cell mui-media'>";
+								Html += "<a  href='detail-news.html?id="+obj.news_id+"' >";
+								Html += "<img class='mui-media-object mui-pull-right' src='" + obj.thumbnail + "'>";
+								Html += "<div class='mui-media-body'>";
+								Html += " ";
+								Html += "<p class='mui-ellipsis'>" + obj.title + "</p>";
+								Html += "</div>";
+								Html += "</a>";
+								Html += "</li>";
+							});
+							document.getElementById("table-view-list-content").innerHTML = Html;
+
+							mui('.mui-scroll-wrapper').scroll({
+								deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+							});
+
+						}
+					});
+
+				},
+				jump: function() {
+					//控制a标签跳转
+					//添加列表项点击事件
+					mui('body').on('tap', 'a', function(e) {
+						document.location.href = this.href;
+					});
+
+				},
+				start: function() {
+					data.ajax_slider();
+					data.ajax_card_list();
+					data.jump();
+				}
+			};
+			data.start();
+
+			//初始化预加载新闻详情页面
+// 			mui.init({
+// 				preloadPages: [{
+// 					id: "detail-news.html",
+// 					url: "detail-news.html"
+// 				}]
+// 			});
+		</script>
+	</body>
+
+</html>
